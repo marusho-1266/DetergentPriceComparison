@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>洗剤価格比較ツール</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .cheapest {
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            margin: 10px 0;
+            padding: 5px 10px;
+        }
+        input {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <h2>洗剤価格比較ツール</h2>
+    <table id="detergentTable">
+        <thead>
+            <tr>
+                <th>値段（円）</th>
+                <th>内容量（g）</th>
+                <th>1gあたりの値段（円）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
+                <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                <td class="result">-</td>
+            </tr>
+            <tr>
+                <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
+                <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                <td class="result">-</td>
+            </tr>
+            <tr>
+                <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                <td><input type="number" class="volume" onchange="calculatePrice()"></td>
+                <td class="result">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="addRow()">行を追加</button>
+    <button onclick="resetTable()">リセット</button>
+
+    <script>
+        function calculatePrice() {
+            let results = document.getElementsByClassName('result');
+            let prices = document.getElementsByClassName('price');
+            let volumes = document.getElementsByClassName('volume');
+            let minPrice = Infinity;
+            let resultValues = [];
+
+            // Calculate prices per ml
+            for (let i = 0; i < prices.length; i++) {
+                let price = parseFloat(prices[i].value) || 0;
+                let volume = parseFloat(volumes[i].value) || 0;
+                let pricePerMl = volume === 0 ? 0 : price / volume;
+                results[i].textContent = pricePerMl === 0 ? '-' : pricePerMl.toFixed(3);
+                if (pricePerMl !== 0) {
+                    resultValues.push({
+                        index: i,
+                        value: pricePerMl
+                    });
+                    minPrice = Math.min(minPrice, pricePerMl);
+                }
+            }
+
+            // Reset all classes
+            for (let result of results) {
+                result.classList.remove('cheapest');
+            }
+
+            // Highlight cheapest
+            if (resultValues.length > 0) {
+                for (let result of resultValues) {
+                    if (result.value === minPrice) {
+                        results[result.index].classList.add('cheapest');
+                    }
+                }
+            }
+        }
+
+        function addRow() {
+            let tbody = document.querySelector('#detergentTable tbody');
+            let newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                <td><input type="number" class="volume" onchange="calculatePrice()"></td>
+                <td class="result">-</td>
+            `;
+            tbody.appendChild(newRow);
+        }
+
+        function resetTable() {
+            // テーブルを初期状態に戻す
+            let tbody = document.querySelector('#detergentTable tbody');
+            tbody.innerHTML = `
+                <tr>
+                    <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                    <td class="result">-</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                    <td class="result">-</td>
+                </tr>
+                <tr>
+                    <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="volume" onchange="calculatePrice()"></td>
+                    <td class="result">-</td>
+                </tr>
+            `;
+            
+            // 結果をリセット
+            let results = document.getElementsByClassName('result');
+            for (let result of results) {
+                result.textContent = '-';
+                result.classList.remove('cheapest');
+            }
+        }
+    </script>
+</body>
+</html>
