@@ -71,13 +71,13 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
-                <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                <td><input type="number" class="volume" onchange="calculatePrice()"></td>
                 <td class="result">-</td>
             </tr>
             <tr>
-                <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
-                <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                <td><input type="number" class="volume" onchange="calculatePrice()"></td>
                 <td class="result">-</td>
             </tr>
             <tr>
@@ -141,17 +141,16 @@
         }
 
         function resetTable() {
-            // テーブルを初期状態に戻す
             let tbody = document.querySelector('#detergentTable tbody');
             tbody.innerHTML = `
                 <tr>
-                    <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
-                    <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="volume" onchange="calculatePrice()"></td>
                     <td class="result">-</td>
                 </tr>
                 <tr>
-                    <td><input type="number" class="price" value="500" onchange="calculatePrice()"></td>
-                    <td><input type="number" class="volume" value="300" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="price" onchange="calculatePrice()"></td>
+                    <td><input type="number" class="volume" onchange="calculatePrice()"></td>
                     <td class="result">-</td>
                 </tr>
                 <tr>
